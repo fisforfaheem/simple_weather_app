@@ -53,7 +53,20 @@ class MyHomePage extends StatelessWidget {
                       fontSize: 15,
                     ),
                   ),
-                  Image.asset('assets/img/cloudy.png'),
+                  Image.asset(
+                    'assets/img/sunny.png',
+                    width: size.width * 0.4,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Monday, 22 Aug',
+                    style: GoogleFonts.hubballi(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 15,
+                    ),
+                  ),
                 ],
               ),
             ),
