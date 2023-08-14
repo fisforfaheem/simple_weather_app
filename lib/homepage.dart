@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_weather_app/get_location.dart';
 import 'package:simple_weather_app/weather_data.dart';
+import 'package:intl/intl.dart';
+
+var dayInfo = DateTime.now();
+var dateFormat = DateFormat('EE, d MMM, yyyy').format(dayInfo);
 
 class MyHomePage extends StatelessWidget {
   var client = WeatherDate();
@@ -14,15 +18,28 @@ class MyHomePage extends StatelessWidget {
   info() async {
     var position = await getPosition();
     data = await client.getData(position.latitude, position.longitude);
+    //!testing
+    // data = await client.getData(36.37, 6.61);
+
     return data;
   }
+  // Future<void> _refreshData() async {
+  //   var position = await getPosition();
+  //   data = await client.getData(position.latitude, position.longitude);
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: Scaffold(
-          body: FutureBuilder(
+        child: Scaffold(
+      body:
+          // RefreshIndicator(
+          //    onRefresh: _refreshData,
+          //   child:
+
+          FutureBuilder(
               future: info(),
               builder: (context, snapshot) {
                 return Container(
@@ -32,7 +49,7 @@ class MyHomePage extends StatelessWidget {
                         Container(
                           height: size.height * 0.75,
                           width: size.width,
-                          padding: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 20),
                           margin: const EdgeInsets.only(right: 10, left: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(35),
@@ -53,48 +70,49 @@ class MyHomePage extends StatelessWidget {
                                 '${data?.cityName}',
                                 style: GoogleFonts.mavenPro(
                                   color: Colors.white.withOpacity(0.9),
-                                  fontSize: 35,
+                                  fontSize: 60,
                                 ),
                               ),
                               const SizedBox(
                                 height: 5,
                               ),
                               Text(
-                                'Monday, 22 Aug',
+                                dateFormat,
                                 style: GoogleFonts.mavenPro(
                                   color: Colors.white.withOpacity(0.9),
-                                  fontSize: 15,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(
-                                height: 1,
+                                height: 5,
                               ),
-                              Image.asset(
-                                'assets/img/sunny.png',
-                                width: size.width * 0.4,
+                              Image.network(
+                                'https:${data?.icon}',
+                                width: size.width * 0.3,
+                                fit: BoxFit.fill,
                               ),
                               const SizedBox(
                                 height: 5,
                               ),
                               Text(
-                                'Sunny',
+                                '${data?.condition}',
                                 style: GoogleFonts.hubballi(
-                                    color: Colors.white.withOpacity(0.9),
-                                    fontSize: 40,
+                                    color: Colors.white,
+                                    fontSize: 30,
                                     fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(
-                                height: 1,
+                                height: 5,
                               ),
                               Text(
-                                '32°',
+                                '${data?.temp}',
                                 style: GoogleFonts.hubballi(
                                   color: Colors.white,
-                                  fontSize: 40,
+                                  fontSize: 75,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
-                              const SizedBox(height: 5),
+                              const SizedBox(height: 10),
                               Row(
                                 children: [
                                   Expanded(
@@ -105,7 +123,7 @@ class MyHomePage extends StatelessWidget {
                                           width: size.width * 0.15,
                                         ),
                                         Text(
-                                          '17.1 km/h',
+                                          '${data?.wind} km/h',
                                           style: GoogleFonts.hubballi(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -114,7 +132,7 @@ class MyHomePage extends StatelessWidget {
                                         ),
                                         Text(
                                           'wind',
-                                          style: GoogleFonts.hubballi(
+                                          style: GoogleFonts.mavenPro(
                                               color:
                                                   Colors.white.withOpacity(0.6),
                                               fontSize: 17,
@@ -131,7 +149,7 @@ class MyHomePage extends StatelessWidget {
                                           width: size.width * 0.15,
                                         ),
                                         Text(
-                                          '61',
+                                          '${data?.humidity}%',
                                           style: GoogleFonts.hubballi(
                                             color:
                                                 Colors.white.withOpacity(0.6),
@@ -141,7 +159,7 @@ class MyHomePage extends StatelessWidget {
                                         ),
                                         Text(
                                           'Humidity',
-                                          style: GoogleFonts.hubballi(
+                                          style: GoogleFonts.mavenPro(
                                               color:
                                                   Colors.white.withOpacity(0.6),
                                               fontSize: 17,
@@ -158,7 +176,7 @@ class MyHomePage extends StatelessWidget {
                                           width: size.width * 0.15,
                                         ),
                                         Text(
-                                          '61',
+                                          '${data?.windDir}',
                                           style: GoogleFonts.hubballi(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -167,7 +185,7 @@ class MyHomePage extends StatelessWidget {
                                         ),
                                         Text(
                                           'Wind Direction',
-                                          style: GoogleFonts.hubballi(
+                                          style: GoogleFonts.mavenPro(
                                               color:
                                                   Colors.white.withOpacity(0.6),
                                               fontSize: 17,
@@ -196,7 +214,7 @@ class MyHomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    '32.0 kp/h',
+                                    '${data?.gust} kp/h',
                                     style: GoogleFonts.mavenPro(
                                         color: Colors.white, fontSize: 23),
                                   ),
@@ -213,7 +231,7 @@ class MyHomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    '1025.0 hPa',
+                                    '${data?.pressure} hPa',
                                     style: GoogleFonts.mavenPro(
                                         color: Colors.white, fontSize: 23),
                                   ),
@@ -233,7 +251,7 @@ class MyHomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    '1.0',
+                                    '${data?.uv}',
                                     style: GoogleFonts.mavenPro(
                                         color: Colors.white, fontSize: 23),
                                   ),
@@ -250,7 +268,7 @@ class MyHomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    '0.0 mm',
+                                    '${data?.precipitation} mm',
                                     style: GoogleFonts.mavenPro(
                                         color: Colors.white, fontSize: 23),
                                   ),
@@ -270,7 +288,7 @@ class MyHomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    '19.1 km /h',
+                                    '${data?.wind}',
                                     style: GoogleFonts.mavenPro(
                                         color: Colors.white, fontSize: 23),
                                   ),
@@ -287,9 +305,9 @@ class MyHomePage extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    '2023 08 22',
+                                    '${data?.lastUpdate}',
                                     style: GoogleFonts.mavenPro(
-                                        color: Colors.green, fontSize: 17),
+                                        color: Colors.green, fontSize: 14),
                                   ),
                                 ],
                               ),
@@ -300,7 +318,7 @@ class MyHomePage extends StatelessWidget {
                     ),
                   ),
                 );
-              })),
-    );
+              }),
+    ));
   }
 }

@@ -12,7 +12,7 @@ class Weather {
       required this.gust,
       required this.uv,
       required this.pressure,
-      required this.pricipe,
+      required this.precipitation,
       required this.lastUpdate});
 
   Weather.fromJson(Map<String, dynamic> json) {
@@ -26,7 +26,7 @@ class Weather {
     gust = json['current']['gust_kph'];
     uv = json['current']['uv'];
     pressure = json['current']['pressure_mb'];
-    pricipe = json['current']['precip_mm'];
+    precipitation = json['current']['precip_mm'];
     lastUpdate = json['current']['last_updated'];
   }
 
@@ -37,7 +37,7 @@ class Weather {
   var icon;
   var lastUpdate;
   var pressure;
-  var pricipe;
+  var precipitation;
   var temp;
   var uv;
   var wind;
